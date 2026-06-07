@@ -1,22 +1,38 @@
+import type { Dictionary } from '@/lib/i18n';
 import { devices, experimentMeta, networkProfiles } from '@/lib/thesis-data';
 
-export function Experiment() {
+export function Experiment({ dict }: { dict: Dictionary }) {
+    const t = dict.experiment;
     return (
         <section id="experiment" className="py-20 border-t border-white/5">
             <div className="container-x">
-                <h2 className="text-3xl font-semibold tracking-tight">The experiment, in numbers</h2>
+                <h2 className="text-3xl font-semibold tracking-tight">{t.title}</h2>
                 <p className="mt-4 max-w-3xl text-zinc-400 leading-relaxed">
-                    A full-factorial run: <b>{experimentMeta.approaches} approaches</b> × four lifecycle
-                    states × <b>{experimentMeta.networks} network profiles</b> × <b>{experimentMeta.devices}</b>
-                    {' '}devices, <b>{experimentMeta.repetitionsPerCell} samples per cell</b>. Total:
-                    ~<b>{experimentMeta.callsTotal} calls</b>. Every duration is timed with a monotonic clock
-                    (CACurrentMediaTime on iOS, SystemClock.elapsedRealtimeNanos on Android) and forwarded to
-                    a Node.js sink for off-device aggregation.
+                    {t.bodyStart}
+                    <b>
+                        {experimentMeta.approaches}
+                        {t.bodyApproaches}
+                    </b>
+                    {t.bodyMiddle1}
+                    <b>
+                        {experimentMeta.networks}
+                        {t.bodyNetworks}
+                    </b>
+                    {t.bodyMiddle2}
+                    <b>{experimentMeta.devices}</b>
+                    {t.bodyMiddle3}
+                    <b>
+                        {experimentMeta.repetitionsPerCell}
+                        {t.bodyRepeats}
+                    </b>
+                    {t.bodyMiddle4}
+                    <b>{experimentMeta.callsTotal}</b>
+                    {t.bodyEnd}
                 </p>
 
                 <div className="mt-10 grid lg:grid-cols-2 gap-8">
                     <div className="card">
-                        <h3 className="text-lg font-semibold text-zinc-50">Devices</h3>
+                        <h3 className="text-lg font-semibold text-zinc-50">{t.devicesTitle}</h3>
                         <ul className="mt-4 space-y-2 text-sm text-zinc-300">
                             {devices.map((d) => (
                                 <li key={d.model} className="flex justify-between border-b border-white/5 pb-2">
@@ -25,53 +41,35 @@ export function Experiment() {
                                 </li>
                             ))}
                         </ul>
-                        <p className="mt-4 text-xs text-zinc-500">
-                            Two iOS + two Android, one "clean" and one vendor build of each — to expose
-                            artefacts of vendor power-saving (Samsung) and old-API behaviour (SE 2020).
-                        </p>
+                        <p className="mt-4 text-xs text-zinc-500">{t.devicesNote}</p>
                     </div>
 
                     <div className="card">
-                        <h3 className="text-lg font-semibold text-zinc-50">Network profiles</h3>
+                        <h3 className="text-lg font-semibold text-zinc-50">{t.networksTitle}</h3>
                         <ul className="mt-4 space-y-2 text-sm text-zinc-300">
-                            {networkProfiles.map((n) => (
-                                <li key={n.id} className="border-b border-white/5 pb-2">
-                                    <div className="font-medium">{n.label}</div>
-                                    <div className="text-xs text-zinc-500 font-mono">{n.detail}</div>
-                                </li>
-                            ))}
+                            {networkProfiles.map((n) => {
+                                const id = n.id as keyof typeof t.networkLabels;
+                                return (
+                                    <li key={n.id} className="border-b border-white/5 pb-2">
+                                        <div className="font-medium">{t.networkLabels[id]}</div>
+                                        <div className="text-xs text-zinc-500 font-mono">{t.networkDetails[id]}</div>
+                                    </li>
+                                );
+                            })}
                         </ul>
-                        <p className="mt-4 text-xs text-zinc-500">
-                            Profiles are reproducible at the network layer via tc-netem and Network Link
-                            Conditioner — not at the operator. Same conditions, every approach, every run.
-                        </p>
+                        <p className="mt-4 text-xs text-zinc-500">{t.networksNote}</p>
                     </div>
                 </div>
 
                 <div className="mt-10 grid sm:grid-cols-3 gap-6">
-                    <StatCard
-                        title="Statistical method"
-                        body="Median + p95 (heavy-tailed latencies), 10 000-iteration percentile bootstrap, Mann–Whitney U, Kruskal–Wallis H, paired Wilcoxon."
-                    />
-                    <StatCard
-                        title="Significance"
-                        body={`α = ${experimentMeta.significanceLevel}; the thesis reports p < ${experimentMeta.publishedPThreshold} across Background/Suspended.`}
-                    />
-                    <StatCard
-                        title="Reproducibility"
-                        body="Same binary across approaches, same monotonic clock, same network profiles. The dataset behind every Chapter-4 table is pinned in vkr-conferencing-stats/data."
-                    />
+                    {t.stats.map((s) => (
+                        <div key={s.title} className="card">
+                            <h4 className="text-sm font-semibold text-zinc-50">{s.title}</h4>
+                            <p className="mt-2 text-xs text-zinc-400 leading-relaxed">{s.body}</p>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>
-    );
-}
-
-function StatCard({ title, body }: { title: string; body: string }) {
-    return (
-        <div className="card">
-            <h4 className="text-sm font-semibold text-zinc-50">{title}</h4>
-            <p className="mt-2 text-xs text-zinc-400 leading-relaxed">{body}</p>
-        </div>
     );
 }

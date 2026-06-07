@@ -10,7 +10,7 @@ import { Problem } from '@/components/Problem';
 import { Repositories } from '@/components/Repositories';
 import { getDictionary } from '@/lib/i18n';
 
-const dict = getDictionary('ru');
+const dict = getDictionary('en');
 
 export const metadata: Metadata = {
     title: dict.meta.title,
@@ -22,10 +22,10 @@ export const metadata: Metadata = {
     },
 };
 
-export default function RussianPage() {
+export default function EnglishPage() {
     return (
         <>
-            <Header dict={dict} locale="ru" />
+            <Header dict={dict} locale="en" />
             <main>
                 <Hero dict={dict} />
                 <Problem dict={dict} />
