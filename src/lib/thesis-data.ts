@@ -12,7 +12,7 @@ export const thesisMeta = {
     titleEn:
         "Approaches to building mobile applications for online conferences over multimedia transmission technologies",
     author: 'Fakhri Imanzade',
-    supervisor: 'Igor Gosudarev',
+    supervisor: 'Государев Илья Борисович',
     university: 'ITMO University',
     year: 2026,
 };

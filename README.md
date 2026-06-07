@@ -40,9 +40,9 @@ The `out/` directory is a self-contained static site, ready to publish to any CD
 
 ## Related repositories
 
-* [`vkr-conferencing-ios`](../vkr-conferencing-ios) — iOS client
-* [`vkr-conferencing-android`](../vkr-conferencing-android) — Android client
-* [`vkr-conferencing-stats`](../vkr-conferencing-stats) — Python statistics + Node.js signaling server
+* [`vkr-conferencing-ios`](https://github.com/fara0000/vkr-conferencing-ios) — iOS client
+* [`vkr-conferencing-android`](https://github.com/fara0000/vkr-conferencing-android) — Android client
+* [`vkr-conferencing-stats`](https://github.com/fara0000/vkr-conferencing-stats) — Python statistics + Node.js signaling server
 
 ## License
 
